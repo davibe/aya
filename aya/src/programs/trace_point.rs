@@ -11,6 +11,8 @@ use crate::{
     sys::perf_event_open_trace_point,
 };
 
+use super::unload_program;
+
 /// The type returned when attaching a [`TracePoint`] fails.
 #[derive(Debug, Error)]
 pub enum TracePointError {
@@ -68,6 +70,11 @@ impl TracePoint {
     /// Loads the program inside the kernel.
     pub fn load(&mut self) -> Result<(), ProgramError> {
         load_program(BPF_PROG_TYPE_TRACEPOINT, &mut self.data)
+    }
+
+    /// Unloads the program inside the kernel.
+    pub fn unload(&mut self) -> Result<(), ProgramError> {
+        unload_program(&mut self.data)
     }
 
     /// Attaches to a given trace point.

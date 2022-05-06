@@ -368,6 +368,15 @@ impl<T: Link> ProgramData<T> {
     }
 }
 
+fn unload_program<T: Link>(data: &mut ProgramData<T>) -> Result<(), ProgramError> {
+    let ProgramData { fd, .. } = data;
+    let fd = data.fd_or_err()?;
+    unsafe {
+        libc::close(fd);
+    }
+    Ok(())
+}
+
 fn load_program<T: Link>(
     prog_type: bpf_prog_type,
     data: &mut ProgramData<T>,
