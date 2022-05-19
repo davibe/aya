@@ -51,7 +51,7 @@ impl KProbe {
         load_program(BPF_PROG_TYPE_KPROBE, &mut self.data)
     }
 
-    /// Unloads the program inside the kernel.
+    /// Unloads the program from the kernel.
     pub fn unload(&mut self) -> Result<(), ProgramError> {
         unload_program(&mut self.data)
     }
