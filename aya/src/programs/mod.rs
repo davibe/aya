@@ -374,6 +374,7 @@ fn unload_program<T: Link>(data: &mut ProgramData<T>) -> Result<(), ProgramError
     unsafe {
         libc::close(fd);
     }
+    data.fd = None;
     Ok(())
 }
 
