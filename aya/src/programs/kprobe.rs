@@ -52,8 +52,11 @@ impl KProbe {
     }
 
     /// Unloads the program from the kernel.
-    pub fn unload(&mut self) -> Result<(), ProgramError> {
-        unload_program(&mut self.data)
+    ///
+    /// If `detach` is true, links will be detached before unloading the program.
+    /// Note that OwnedLinks you obtained using [KProbe::forget_link] will not be detached.
+    pub fn unload(&mut self, detach: bool) -> Result<(), ProgramError> {
+        unload_program(&mut self.data, detach)
     }
 
     /// Returns `KProbe` if the program is a `kprobe`, or `KRetProbe` if the

@@ -78,6 +78,13 @@ impl<T: Link> LinkMap<T> {
             .detach()
     }
 
+    pub(crate) fn remove_all(&mut self) -> Result<(), ProgramError> {
+        for (_, link) in self.links.drain() {
+            link.detach()?;
+        }
+        Ok(())
+    }
+
     pub(crate) fn forget(&mut self, link_id: T::Id) -> Result<T, ProgramError> {
         self.links.remove(&link_id).ok_or(ProgramError::NotAttached)
     }
@@ -85,9 +92,7 @@ impl<T: Link> LinkMap<T> {
 
 impl<T: Link> Drop for LinkMap<T> {
     fn drop(&mut self) {
-        for (_, link) in self.links.drain() {
-            let _ = link.detach();
-        }
+        let _ = self.remove_all();
     }
 }
 

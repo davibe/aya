@@ -368,8 +368,11 @@ impl<T: Link> ProgramData<T> {
     }
 }
 
-fn unload_program<T: Link>(data: &mut ProgramData<T>) -> Result<(), ProgramError> {
+fn unload_program<T: Link>(data: &mut ProgramData<T>, detach: bool) -> Result<(), ProgramError> {
     let ProgramData { fd, .. } = data;
+    if detach {
+        data.links.remove_all()?;
+    }
     let fd = data.fd_or_err()?;
     unsafe {
         libc::close(fd);
