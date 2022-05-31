@@ -20,7 +20,7 @@ fn isLoaded() -> bool {
 fn assertLoaded(loaded: bool) {
     let state = isLoaded();
     if state != loaded {
-        println!("Expected loaded: {} but was loaded: {}", loaded, state);
+        panic!("Expected loaded: {} but was loaded: {}", loaded, state);
         process::exit(0x100)
     }
 }
