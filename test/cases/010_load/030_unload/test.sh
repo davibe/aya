@@ -25,7 +25,3 @@ scp_vm ${NAME}.o
 scp_vm ${NAME}
 
 exec_vm sudo ./${NAME}
-exitcode=$?
-echo "exit code $exitcode"
-
-exit 0

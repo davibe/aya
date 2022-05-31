@@ -19,7 +19,6 @@ fn is_loaded() -> bool {
 fn assert_loaded(loaded: bool) {
     let state = is_loaded();
     if state == loaded {
-        println!("all good");
         return;
     }
     panic!("Expected loaded: {} but was loaded: {}", loaded, state);
