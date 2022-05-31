@@ -55,5 +55,5 @@ fn main() {
 
     dispatcher.unload(true).unwrap();
 
-    assert_loaded(false);
+    assert_loaded(true);
 }
