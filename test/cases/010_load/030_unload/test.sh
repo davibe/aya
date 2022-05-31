@@ -2,7 +2,7 @@
 # SUMMARY: Check that long names are properly truncated
 # LABELS:
 
-set -e
+set -ex
 
 # Source libraries. Uncomment if needed/defined
 #. "${RT_LIB}"
@@ -12,7 +12,6 @@ NAME=test
 
 clean_up() {
     rm -rf ebpf user ${NAME}.o ${NAME}
-    exec_vm sudo pkill -9 ${NAME}
     exec_vm rm ${NAME} ${NAME}.o
 }
 
@@ -26,3 +25,7 @@ scp_vm ${NAME}.o
 scp_vm ${NAME}
 
 exec_vm sudo ./${NAME}
+exitcode=$?
+echo "exit code $exitcode"
+
+exit 0
