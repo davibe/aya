@@ -12,5 +12,6 @@ set -ex
 # Test code goes here
 
 echo "AAAAAAAAAAAAAAAAAAA"
+find /__w/aya
 aya-gen generate tcphdr
 find /usr/src -name tcp.h
