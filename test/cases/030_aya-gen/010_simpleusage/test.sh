@@ -10,6 +10,8 @@ set -ex
 
 # Test code goes here
 
+which aya-gen
+
 ./target/debug/aya-gen generate tcphdr
 find /usr/src -name tcp.h
 
