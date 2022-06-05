@@ -6,12 +6,13 @@ set -ex
 
 # Source libraries. Uncomment if needed/defined
 #. "${RT_LIB}"
-. "${RT_PROJECT_ROOT}/_lib/lib.sh"
+# . "${RT_PROJECT_ROOT}/_lib/lib.sh"
+
 
 # Test code goes here
 
+echo "AAAAAAAAAAAAAAAAAAA"
 which aya-gen
-
 ./target/debug/aya-gen generate tcphdr
 find /usr/src -name tcp.h
 
