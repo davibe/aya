@@ -12,6 +12,7 @@ set -ex
 # Test code goes here
 
 echo "AAAAAAAAAAAAAAAAAAA"
-find /__w/aya
+ls /
+ls /user/target/x86_64-unknown-linux-musl/release
 aya-gen generate tcphdr
 find /usr/src -name tcp.h
