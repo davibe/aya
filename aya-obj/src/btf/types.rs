@@ -1309,16 +1309,20 @@ impl BtfType {
 
     pub(crate) fn size(&self) -> Option<u32> {
         match self {
-            Self::Int(t) => Some(t.size),
-            Self::Float(t) => Some(t.size),
-            Self::Enum(t) => Some(t.size),
-            Self::Enum64(t) => Some(t.size),
-            Self::Struct(t) => Some(t.size),
-            Self::Union(t) => Some(t.size),
-            Self::DataSec(t) => Some(t.size),
-            Self::Ptr(_) => Some(mem::size_of::<&()>() as u32),
+            BtfType::Int(t) => Some(t.size),
+            BtfType::Float(t) => Some(t.size),
+            BtfType::Enum(t) => Some(t.size),
+            BtfType::Enum64(t) => Some(t.size),
+            BtfType::Struct(t) => Some(t.size),
+            BtfType::Union(t) => Some(t.size),
+            BtfType::DataSec(t) => Some(t.size),
+            BtfType::Ptr(_) => Some(Self::ptr_size()),
             _ => None,
         }
+    }
+
+    pub(crate) fn ptr_size() -> u32 {
+        mem::size_of::<&()>() as u32
     }
 
     pub(crate) fn btf_type(&self) -> Option<u32> {

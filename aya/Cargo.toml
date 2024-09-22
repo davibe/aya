@@ -27,6 +27,8 @@ log = { workspace = true }
 object = { workspace = true, features = ["elf", "read_core", "std", "write"] }
 once_cell = { workspace = true }
 thiserror = { workspace = true }
+tokio = { workspace = true, features = ["rt"], optional = true }
+flate2 = "1.0"
 
 [dev-dependencies]
 tempfile = { workspace = true }
