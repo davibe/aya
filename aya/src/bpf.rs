@@ -171,12 +171,11 @@ fn compute_kconfig_definition(features: &Features) -> HashMap<String, Vec<u8>> {
                 Some('y') => 1_u64.to_ne_bytes().to_vec(),
                 Some('m') => 2_u64.to_ne_bytes().to_vec(),
                 Some('"') => {
-                    if raw_value.len() > 2 || raw_value.ends_with('"') {
+                    if raw_value.len() < 2 || !raw_value.ends_with('"') {
                         continue;
                     }
 
                     let raw_value = &raw_value[1..raw_value.len() - 1];
-
                     raw_value.as_bytes().to_vec()
                 }
                 Some(_) => {
