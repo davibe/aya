@@ -3,10 +3,7 @@ use std::{
     collections::{HashMap, HashSet},
     fs::{self, File},
     io::{self, Read},
-    os::{
-        fd::{AsFd as _, AsRawFd as _},
-        raw::c_int,
-    },
+    os::fd::{AsFd as _, AsRawFd as _},
     path::{Path, PathBuf},
     sync::{Arc, LazyLock},
 };
@@ -21,7 +18,6 @@ use aya_obj::{
     relocation::EbpfRelocationError,
 };
 use flate2::read::GzDecoder;
-use lazy_static::lazy_static;
 use log::{debug, warn};
 use thiserror::Error;
 
@@ -36,14 +32,13 @@ use crate::{
     },
     sys::{
         self, bpf_load_btf, is_bpf_cookie_supported, is_bpf_global_data_supported,
-        is_bpf_syscall_wrapper_supported, is_btf_datasec_supported, is_btf_decl_tag_supported,
-        is_btf_enum64_supported, is_btf_float_supported, is_btf_func_global_supported,
-        is_btf_func_supported, is_btf_supported, is_btf_type_tag_supported,
-        is_info_gpl_compatible_supported, is_info_map_ids_supported, is_perf_link_supported,
-        is_probe_read_kernel_supported, is_prog_id_supported, is_prog_name_supported,
-        retry_with_verifier_logs,
+        is_bpf_syscall_wrapper_supported, is_btf_datasec_supported, is_btf_datasec_zero_supported,
+        is_btf_decl_tag_supported, is_btf_enum64_supported, is_btf_float_supported,
+        is_btf_func_global_supported, is_btf_func_supported, is_btf_supported,
+        is_btf_type_tag_supported, is_perf_link_supported, is_probe_read_kernel_supported,
+        is_prog_id_supported, is_prog_name_supported, retry_with_verifier_logs,
     },
-    util::{bytes_of, bytes_of_slice, page_size, possible_cpus, KernelVersion, POSSIBLE_CPUS},
+    util::{bytes_of, bytes_of_slice, nr_cpus, page_size, KernelVersion},
 };
 
 /// Marker trait for types that can safely be converted to and from byte slices.
@@ -90,8 +85,8 @@ fn detect_features() -> Features {
         is_bpf_cookie_supported(),
         is_prog_id_supported(BPF_MAP_TYPE_CPUMAP),
         is_prog_id_supported(BPF_MAP_TYPE_DEVMAP),
-        is_info_map_ids_supported(),
-        is_info_gpl_compatible_supported(),
+        false,
+        false,
         is_bpf_syscall_wrapper_supported(),
         btf,
     );
@@ -104,9 +99,8 @@ pub fn features() -> &'static Features {
     &FEATURES
 }
 
-lazy_static! {
-    static ref KCONFIG_DEFINITION: HashMap<String, Vec<u8>> = compute_kconfig_definition(&FEATURES);
-}
+static KCONFIG_DEFINITION: LazyLock<HashMap<String, Vec<u8>>> =
+    LazyLock::new(|| compute_kconfig_definition(&FEATURES));
 
 fn compute_kconfig_definition(features: &Features) -> HashMap<String, Vec<u8>> {
     let mut result = HashMap::new();

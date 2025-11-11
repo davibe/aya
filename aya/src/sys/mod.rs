@@ -13,6 +13,7 @@ use std::{
     io,
     os::fd::{BorrowedFd, OwnedFd},
 };
+use std::mem;
 
 use aya_obj::generated::{bpf_attr, bpf_cmd, perf_event_attr};
 pub(crate) use bpf::*;

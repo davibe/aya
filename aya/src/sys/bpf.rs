@@ -32,18 +32,12 @@ use log::warn;
 use crate::{
     Btf, Pod, VerifierLogLevel,
     maps::{MapData, PerCpuValues},
-    obj::{
-        self,
-        btf::{
-            BtfParam, BtfType, DataSec, DataSecEntry, DeclTag, Float, Func, FuncLinkage, FuncProto,
-            FuncSecInfo, Int, IntEncoding, LineSecInfo, Ptr, TypeTag, Var, VarLinkage,
-        },
-        copy_instructions,
-    },
-    programs::probe::create_as_probe,
+    programs::{probe::create_as_probe, LsmAttachType, ProgramType, links::LinkRef},
     sys::{syscall, SysResult, Syscall, SyscallError},
     util::KernelVersion,
 };
+use aya_obj::copy_instructions;
+use std::fmt;
 
 pub(crate) fn bpf_create_iter(link_fd: BorrowedFd<'_>) -> io::Result<crate::MockableFd> {
     let mut attr = unsafe { mem::zeroed::<bpf_attr>() };

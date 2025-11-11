@@ -752,7 +752,7 @@ pub(crate) fn run(opts: Options) -> Result<()> {
                         config_path.as_os_str().as_bytes(),
                         " 0755 0 0\n".as_bytes(),
                     ] {
-                        stdin.write_all(bytes).expect("write");
+                        stdin.deref().write_all(bytes).expect("write");
                     }
                 }
 

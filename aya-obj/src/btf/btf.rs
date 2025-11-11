@@ -936,7 +936,7 @@ impl Object {
         &mut self,
         externs: &HashMap<String, Vec<u8>>,
     ) -> Result<Option<(SectionIndex, Vec<u8>)>, BtfError> {
-        if let Some(ref mut obj_btf) = &mut self.btf {
+        if let Some(obj_btf) = &mut self.btf {
             if obj_btf.is_empty() {
                 return Ok(None);
             }
