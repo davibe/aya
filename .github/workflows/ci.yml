@@ -46,7 +46,17 @@ jobs:
       # On the `aya-rs/aya` repository, regenerate the public API on a schedule.
       #
       # On all other events and repositories assert the public API is up to date.
-      - run: cargo xtask public-api
+      - run: |
+          cargo xtask public-api || {
+            cargo xtask public-api --bless
+            echo "Mismatching public API defs."
+            echo "PATCH TO APPLY:"
+            echo "=========================================="
+            git diff --no-prefix xtask/public-api/
+            echo "=========================================="
+            echo "END OF PATCH"
+            exit 1
+          }
         if: ${{ !(github.event_name == 'schedule' && github.repository == 'aya-rs/aya') }}
       - run: cargo xtask public-api --bless
         if: ${{ (github.event_name == 'schedule' && github.repository == 'aya-rs/aya') }}
